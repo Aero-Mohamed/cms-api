@@ -8,7 +8,10 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/passport": "^13.0",
+        "laravel/tinker": "^2.10.1",
+        "nunomaduro/larastan": "^3.6",
+        "squizlabs/php_codesniffer": "^3.13"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -32,6 +35,10 @@
         }
     },
     "scripts": {
+        "lint": [
+            "phpcbf --standard=PSR12 app routes database",
+            "phpstan analyse"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
