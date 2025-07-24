@@ -110,7 +110,7 @@ jobs:
 
       - uses: symfonycorp/security-checker-action@v5
         with:
-          lock: ./backend/composer.lock
+          lock: ./composer.lock
 
       - name: Execute Code Sniffer via phpcs
         run: |
