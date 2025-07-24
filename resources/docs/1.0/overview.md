@@ -1,43 +1,21 @@
-# 🧩 Dynamic CMS Backend API
+# Overview
+
+---
+
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Technologies](#Technologies)
+- [Continuous Integration](#ci-pipline)
+- [️Code Standard & Quality](#standard-quality)
+- [Git Workflow](#git-flow)
+- [License](#License)
+
+<a name="section-1"></a>
+## Dynamic CMS Backend API
 
 A Laravel-based backend API for a generic Content Management System (CMS), designed to allow full **dynamic entity creation**, **custom attributes**, and **content management**.
 
----
-After project installation head to **localhost:8000/docs** to read the project documentation
-
----
-## 🚀 Setup Instructions
-### 🚢 Quick Start with Docker
-#### Prerequisites
-- [Docker](https://www.docker.com/get-started)
-- [Docker Compose](https://docs.docker.com/compose/)
-
-#### Instructions
-- **Clone the repository**
-```bash
-git clone https://github.com/Aero-Mohamed/cms-api.git
-cd cms-api
-chmod 644 ./docker/mysql/my.cnf
-```
-As we are in development mode, we mount the current project directory into the container.
-So, we need to change the permissions of the MySQL configuration file.
-
-- **Build and Start Containers**
-```bash
-docker-compose up -d --build
-docker exec -it dynamic_cms bash
-```
-This builds the Docker containers and starts the Laravel app, MySQL, Redis, and Nginx services.
-Then, Open an interactive terminal session inside the Laravel PHP container (called dynamic_cms).
-
-- **Run the Installation Script**
-```bash
-chmod 755 install.sh
-./install.sh
-```
-
----
-
+<a name="project-overview"></a>
 ## 🧠 Project Overview
 
 This CMS backend supports two roles:
@@ -53,6 +31,7 @@ This CMS backend supports two roles:
 
 ---
 
+<a name="features"></a>
 ## 📦 Features
 
 - Dynamic **entity & field creation**
@@ -62,6 +41,7 @@ This CMS backend supports two roles:
 - RESTful resource routing
 - JWT-based authentication (Laravel Passport)
 
+<a name="Technologies"></a>
 ## 🛠️ Technologies
 
 - **Laravel 12+**
@@ -71,6 +51,7 @@ This CMS backend supports two roles:
 
 ---
 
+<a name="ci-pipline"></a>
 # 🧪 Continuous Integration (CI)
 
 This project uses **GitHub Actions** to automatically run tests and code quality checks on every push to:
@@ -99,6 +80,7 @@ The CI pipeline runs the following checks:
 
 ---
 
+<a name="standard-quality"></a>
 ## 🛡️Code Standard & Quality
 - Use command `composer lint` to run the following checks:
     - Static Code Analysis (PHP Stan + LaraStan) - Testing for potential errors.
@@ -109,6 +91,7 @@ The CI pipeline runs the following checks:
 
 ---
 
+<a name="git-flow"></a>
 ## 🧱 Git Workflow
 
 This project follows the **Git Flow** branching model.
@@ -130,6 +113,7 @@ This repo uses [Git Flow](https://nvie.com/posts/a-successful-git-branching-mode
 
 ---
 
+<a name="License"></a>
 ## 📃 License
-
-This project is licensed under the MIT License – see the [LICENSE](./LICENSE) file for details.
+(/{{route}}/{{version}}/installation)
+This project is licensed under the MIT License – see the [LICENSE](/{{route}}/{{version}}/LICENSE) file for details.
