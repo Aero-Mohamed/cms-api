@@ -1,0 +1,144 @@
+name: dynamic-cms-ci
+on:
+  push:
+    branches:
+      - develop
+      - feature/**
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:latest
+        env:
+          REDIS_HOST: 127.0.0.1
+          REDIS_PORT: 6379
+        ports:
+          - 6379:6379
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: dynamic_cms
+        ports:
+          - 33306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    strategy:
+      matrix:
+        operating-system: [ ubuntu-latest ]
+        php-versions: [ '8.3' ]
+        dependency-stability: [ 'prefer-none' ]
+        laravel: [ '12.*' ]
+        include:
+          - laravel: 12.*
+            testbench: 9.*
+
+    name: P${{ matrix.php-versions }} - L${{ matrix.laravel }} - ${{ matrix.dependency-stability }} - ${{ matrix.operating-system }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Install php-pcov for Coverage Test"
+        run: sudo apt-get install php-pcov -y
+
+      - name: Install PHP versions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        id: actions-cache
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Cache PHP dependencies
+        uses: actions/cache@v4
+        id: vendor-cache
+        with:
+          path: backend/vendor
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Install Laravel Dependencies
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Update Dependencies with latest stable
+        if: matrix.dependency-stability == 'prefer-stable'
+        run: composer update --prefer-stable
+
+      - name: Update Dependencies with lowest stable
+        if: matrix.dependency-stability == 'prefer-lowest'
+        run: composer update --prefer-stable --prefer-lowest
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+
+      - name: Run Migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: dynamic_cms
+          DB_PORT: 33306
+          DB_USERNAME: root
+          DB_PASSWORD: root
+        run: php artisan migrate
+
+      - name: Show dir
+        run: pwd
+
+      - name: PHP Version
+        run: php --version
+
+      - name: Execute test (Unit and Feature Tests)
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: dynamic_cms
+          DB_PORT: 33306
+          DB_USERNAME: root
+          DB_PASSWORD: root
+        run: php artisan test --coverage
+
+      - uses: symfonycorp/security-checker-action@v5
+        with:
+          lock: ./backend/composer.lock
+
+      - name: Execute Code Sniffer via phpcs
+        run: |
+          composer require --dev squizlabs/php_codesniffer
+          vendor/bin/phpcs --config-set show_warnings 0
+          vendor/bin/phpcs --standard=PSR12 app
+
+      - name: Execute Code Static Analysis (PHP Stan + Larastan)
+        run: |
+          composer require --dev larastan/larastan
+          vendor/bin/phpstan analyse --error-format=github -c phpstan.neon --no-progress
+
+      - name: Run Fresh migration and seed the data
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: dynamic_cms
+          DB_PORT: 33306
+          DB_USERNAME: root
+          DB_PASSWORD: root
+        run: php artisan migrate:fresh --seed
