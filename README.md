@@ -1,4 +1,4 @@
-# 🧩 Dynamic CMS Backend API (Laravel)
+# 🧩 Dynamic CMS Backend API
 
 A Laravel-based backend API for a generic Content Management System (CMS), designed to allow full **dynamic entity creation**, **custom attributes**, and **content management**.
 
@@ -106,3 +106,28 @@ The CI pipeline runs the following checks:
         - Fix Problems `./vendor/bin/phpcbf --standard=PSR12 app`
 
 ---
+
+## 🧱 Git Workflow
+
+This project follows the **Git Flow** branching model.
+
+### Branch Structure
+
+- `main` – Stable, production-ready code
+- `develop` – Active development branch
+- `feature/*` – Feature branches
+- `release/*` – Pre-release staging branches
+- `bugfix/*` – Small isolated fixes
+- `hotfix/*` – Emergency fixes for `main`
+- `support/*` – Support branches for old releases
+- Versions – `v1.0.0`, `v1.1.0`, etc.
+
+### Git Flow Commands Used
+
+This repo uses [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) via the CLI tool:
+
+---
+
+## 📃 License
+
+This project is licensed under the MIT License – see the [LICENSE](./LICENSE) file for details.
