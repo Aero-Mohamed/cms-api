@@ -69,6 +69,34 @@ This CMS backend supports two roles:
 
 ---
 
+# 🧪 Continuous Integration (CI)
+
+This project uses **GitHub Actions** to automatically run tests and code quality checks on every push to:
+
+- `develop`
+- Any `feature/**` branch
+
+### CI Workflow Summary
+
+The CI pipeline runs the following checks:
+
+| Step                           | Description                                                 |
+|--------------------------------|-------------------------------------------------------------|
+| ✅ PHP Lint & Version Check     | Ensures PHP 8.3 is used                                     |
+| ✅ Composer Install & Cache     | Installs dependencies with cache optimization               |
+| ✅ Database Setup               | Runs php artisan migrate and migrate:fresh --seed using MySQL container                  |
+| ✅ Security Audit             | Scans for known security vulnerabilities in `composer.lock` |
+| ✅ PHPStan + Larastan           | Static analysis and type checking                           |
+| ✅ PHPCS                        | PSR-12 code style checks                                    |
+| ✅ Tests Execution              | Runs php artisan test --coverage                                       |
+
+### Workflow Configuration
+
+- File path: `.github/workflows/dynamic-cms-ci.yml`
+- Trigger: On push to `develop` or `feature/**` branches
+
+---
+
 ## 🛡️Code Standard & Quality
 - Use command `composer lint` to run the following checks:
     - Static Code Analysis (PHP Stan + LaraStan) - Testing for potential errors.
