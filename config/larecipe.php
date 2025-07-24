@@ -95,11 +95,11 @@ return [
     */
 
     'search'            => [
-        'enabled'       => false,
-        'default'       => 'algolia',
+        'enabled'       => true,
+        'default'       => 'internal',
         'engines'       => [
             'internal'  => [
-                'index' => ['h2', 'h3']
+                'index' => ['h1', 'h2', 'h3']
             ],
             'algolia'   => [
                 'key'   => '',
@@ -146,11 +146,11 @@ return [
     */
 
     'seo'                 => [
-        'author'          => '',
-        'description'     => '',
-        'keywords'        => '',
+        'author'          => 'Mohamed Hassan',
+        'description'     => 'Dynamic CMS',
+        'keywords'        => 'cms',
         'og'              => [
-            'title'       => '',
+            'title'       => 'Dynamic CMS Documentation',
             'type'        => 'article',
             'url'         => '',
             'image'       => '',
