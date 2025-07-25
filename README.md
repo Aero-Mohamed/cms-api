@@ -26,7 +26,14 @@ It provides:
 ---
 
 ## ERD Digram
+
+**Note:** 
+- The ERD Digram focuses on the core feature structure.
+- API Authentication is managed by Package Passport
+- Roles and Permissions are managed by [Spatie Laravel Permissions](https://spatie.be/docs/laravel-permission/v6/introduction)
+
 ![ERD Digram](public/docs-assets/img/erd-digram.png)
+
 ---
 ## 🚀 Setup Instructions
 ### 🚢 Quick Start with Docker
