@@ -3,11 +3,18 @@
 ---
 
 - [Use Case Context](#Use-Case-Context)
+- [Comparison of CMSs](#Comparison-of-CMSs)
+- [Strapi (Headless CMS)](#Comparison-of-CMSs)
+- [Directus](#Directus)
+- [Sanity.io](#Sanity)
+- [KeystoneJS](#KeystoneJS)
+- [Conclusion](#Conclusion)
+- [References](#References)
 
 ## Dynamic Content Modeling in Modern CMS Platforms
 This document provides an overview of how popular CMS platforms handle **dynamic content types**, **custom fields**, and **relationships** at the **database level**.
 
-<a href="Use-Case-Context"></a>
+<a name="Use-Case-Context"></a>
 ## 🎯 Use Case Context
 
 In a generic content management system (CMS), users (Admins) should be able to:
@@ -18,6 +25,7 @@ In a generic content management system (CMS), users (Admins) should be able to:
 
 ---
 
+<a name="Comparison-of-CMSs"></a>
 ## 🔍 Comparison of CMSs
 
 | CMS            | Storage Type           | Dynamic Fields         | Table Per Entity         | Relationships          | Runtime Schema Updates  |
@@ -31,6 +39,7 @@ In a generic content management system (CMS), users (Admins) should be able to:
 
 ## 📦 Platform Summaries
 
+<a name="Strapi"></a>
 ### 1. Strapi (Headless CMS)
 - **Database Strategy**: Each content type generates a new SQL table.
 - **Fields**: Become real database columns.
@@ -40,6 +49,7 @@ In a generic content management system (CMS), users (Admins) should be able to:
 
 ---
 
+<a name="Directus"></a>
 ### 2. Directus
 - **Database Strategy**: Uses existing SQL tables + internal metadata.
 - **Fields**: Defined in `directus_fields`, not actual DB columns.
@@ -49,6 +59,7 @@ In a generic content management system (CMS), users (Admins) should be able to:
 
 ---
 
+<a name="Sanity"></a>
 ### 3. Sanity.io
 - **Database Strategy**: NoSQL (GROQ), schema-less JSON documents.
 - **Fields**: Stored as JSON with developer-defined JS schema.
@@ -58,6 +69,7 @@ In a generic content management system (CMS), users (Admins) should be able to:
 
 ---
 
+<a name="KeystoneJS"></a>
 ### 4. KeystoneJS
 - **Database Strategy**: Uses Prisma to generate SQL schema from JS code.
 - **Fields**: Real SQL columns.
@@ -67,6 +79,7 @@ In a generic content management system (CMS), users (Admins) should be able to:
 
 ---
 
+<a name="Conclusion"></a>
 ## 🧠 Conclusion
 
 Based on the Task requirement that i need to use (MySQL) database. I would consider two main strategies:
@@ -85,6 +98,7 @@ Based on the Task requirement that i need to use (MySQL) database. I would consi
 
 ---
 
+<a name="References"></a>
 ## 🔗 References
 - [Strapi](https://strapi.io)
 - [Directus](https://directus.io)

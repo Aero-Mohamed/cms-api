@@ -3,8 +3,11 @@
 A Laravel-based backend API for a generic Content Management System (CMS), designed to allow full **dynamic entity creation**, **custom attributes**, and **content management**.
 
 ---
-After project installation head to **localhost:8000/docs** to read the project documentation
 
+## ERD Digram
+**Note**: After project installation head to **localhost:8000/docs** to read the project documentation
+
+![ERD Digram](public/docs-assets/img/erd-digram.png)
 ---
 ## 🚀 Setup Instructions
 ### 🚢 Quick Start with Docker
