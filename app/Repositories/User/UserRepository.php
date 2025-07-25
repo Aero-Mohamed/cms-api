@@ -2,10 +2,13 @@
 
 namespace App\Repositories\User;
 
-use App\Dtos\User\CreateUserData;
+use App\Dtos\User\CreateOperatorData;
+use App\Enums\SystemRoleEnum;
 use App\Models\User;
 use App\Repositories\User\Contracts\UserRepositoryInterface;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\Contracts\OAuthenticatable;
@@ -15,16 +18,20 @@ class UserRepository implements UserRepositoryInterface
     /**
      * Create a new user
      *
-     * @param CreateUserData $data
+     * @param CreateOperatorData $data
+     * @param SystemRoleEnum $role
      * @return User
      */
-    public function create(CreateUserData $data): User
+    public function create(CreateOperatorData $data, SystemRoleEnum $role): User
     {
-        return User::query()->create([
+        $user = User::query()->create([
             'name' => $data->name,
             'email' => $data->email,
             'password' => Hash::make($data->password),
         ]);
+        $user->assignRole($role->value);
+
+        return $user;
     }
 
     /**
@@ -68,5 +75,24 @@ class UserRepository implements UserRepositoryInterface
     public function getCurrentUser(): ?Authenticatable
     {
         return Auth::user();
+    }
+
+    /**
+     * @return LengthAwarePaginator
+     */
+    public function getOperators(): LengthAwarePaginator
+    {
+        return User::role(SystemRoleEnum::OPERATOR->value)
+            ->latest()
+            ->paginate();
+    }
+
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function deleteUser(User $user): void
+    {
+        $user->delete();
     }
 }

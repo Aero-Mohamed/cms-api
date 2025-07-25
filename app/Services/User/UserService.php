@@ -2,8 +2,9 @@
 
 namespace App\Services\User;
 
-use App\Dtos\User\CreateUserData;
+use App\Dtos\User\CreateOperatorData;
 use App\Dtos\User\LoginUserData;
+use App\Enums\SystemRoleEnum;
 use App\Models\User;
 use App\Repositories\User\Contracts\UserRepositoryInterface;
 use App\Services\User\Actions\CreateUserAction;
@@ -19,14 +20,12 @@ use Laravel\Passport\PersonalAccessTokenResult;
 class UserService implements UserServiceInterface
 {
     /**
-     * @param CreateUserAction $createUser
      * @param GenerateTokenAction $generateToken
      * @param LoginUserAction $loginUser
      * @param LogoutUserAction $logoutUser
      * @param UserRepositoryInterface $userRepository
      */
     public function __construct(
-        protected CreateUserAction $createUser,
         protected GenerateTokenAction $generateToken,
         protected LoginUserAction $loginUser,
         protected LogoutUserAction $logoutUser,
@@ -35,12 +34,13 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param CreateUserData $data
+     * @param CreateOperatorData $data
+     * @param SystemRoleEnum $role
      * @return User
      */
-    public function register(CreateUserData $data): User
+    public function create(CreateOperatorData $data, SystemRoleEnum $role): User
     {
-        $user = $this->createUser->handle($data);
+        $user = $this->userRepository->create($data, $role);
         event(new Registered($user));
 
         return $user;
@@ -81,5 +81,15 @@ class UserService implements UserServiceInterface
         if ($user = $this->getAuthenticatedUser()) {
             $this->logoutUser->handler($user);
         }
+    }
+
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function delete(User $user): void
+    {
+        $this->logoutUser->handler($user);
+        $this->userRepository->deleteUser($user);
     }
 }

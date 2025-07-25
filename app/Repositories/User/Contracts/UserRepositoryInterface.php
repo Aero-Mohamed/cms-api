@@ -2,9 +2,11 @@
 
 namespace App\Repositories\User\Contracts;
 
-use App\Dtos\User\CreateUserData;
+use App\Dtos\User\CreateOperatorData;
+use App\Enums\SystemRoleEnum;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\Contracts\OAuthenticatable;
 
 interface UserRepositoryInterface
@@ -12,10 +14,11 @@ interface UserRepositoryInterface
     /**
      * Create a new user
      *
-     * @param CreateUserData $data
+     * @param CreateOperatorData $data
+     * @param SystemRoleEnum $role
      * @return User
      */
-    public function create(CreateUserData $data): User;
+    public function create(CreateOperatorData $data, SystemRoleEnum $role): User;
 
     /**
      * Find the user by email
@@ -47,4 +50,16 @@ interface UserRepositoryInterface
      * @return ?Authenticatable
      */
     public function getCurrentUser(): ?Authenticatable;
+
+    /**
+     * Get Users with role Operator
+     * @return LengthAwarePaginator
+     */
+    public function getOperators(): LengthAwarePaginator;
+
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function deleteUser(User $user): void;
 }
