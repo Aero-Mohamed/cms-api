@@ -24,8 +24,8 @@ class OperatorController extends Controller
     public function __construct(
         protected UserRepositoryInterface $userRepository,
         protected UserServiceInterface $userService
-    ){
-        $this->middleware('role:'.SystemRoleEnum::ADMIN->value);
+    ) {
+        $this->middleware('role:' . SystemRoleEnum::ADMIN->value);
     }
 
     /**

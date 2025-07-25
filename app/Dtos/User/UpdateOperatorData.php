@@ -24,10 +24,8 @@ class UpdateOperatorData extends Data
     public function __construct(
         #[Sometimes, Max(255)]
         public ?string $name = null,
-
         #[Sometimes, Email, Max(255)]
         public ?string $email = null,
-
         #[Sometimes, Min(8), Max(255), Confirmed]
         public ?string $password = null,
     ) {
