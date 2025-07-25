@@ -4,9 +4,28 @@ A Laravel-based backend API for a generic Content Management System (CMS), desig
 
 ---
 
-## ERD Digram
-**Note**: After project installation head to **localhost:8000/docs** to read the project documentation
+### 🔖 Project Documentation (`/docs`)
 
+The project documentation is accessible at `/docs`. It includes:
+
+- **Overview** of the system’s purpose and architecture
+- **Literature Review** of similar software and existing solutions
+- **ERD Diagram** illustrating the database structure and entity relationships
+
+The documentation content is written in **Markdown** files located in: `resources/docs` 
+
+---
+
+### 🔌 API Reference (`/api-reference`)
+The full API reference is available at `/api-reference`, powered by the **[Laravel Scribe](https://scribe.knuckles.wtf/)** package.
+It provides:
+- Grouped endpoint listings
+- Example requests and responses
+- Parameter details and validation rules
+- Downloadable **Postman collection** and **OpenAPI (Swagger) specification** for testing and external integration
+---
+
+## ERD Digram
 ![ERD Digram](public/docs-assets/img/erd-digram.png)
 ---
 ## 🚀 Setup Instructions

@@ -29,6 +29,10 @@ jobs:
           --health-timeout=5s
           --health-retries=3
 
+
+    env:
+      REDIS_HOST: 127.0.0.1
+
     strategy:
       matrix:
         operating-system: [ ubuntu-latest ]

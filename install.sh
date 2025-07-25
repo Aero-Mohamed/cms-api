@@ -27,5 +27,14 @@ if [ -f artisan ]; then
     echo "✅ Clear Cache"
 fi
 
+find . -type f -exec chmod 644 {} \;
+find . -type d -exec chmod 755 {} \;
+chmod -R 777 storage bootstrap/cache
+chmod 755 init.sh vendor/bin/*
+chmod 600 storage/oauth-*.key
+chown www-data:www-data /var/www/storage/oauth-*.key
+
+echo "✅ Setup All files and folders permissions"
+
 
 
