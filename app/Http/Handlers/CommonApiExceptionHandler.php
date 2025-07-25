@@ -88,8 +88,6 @@ class CommonApiExceptionHandler
                     statusCode: ResponseAlias::HTTP_INTERNAL_SERVER_ERROR
                 );
             }
-
-            throw $e;
         });
     }
 }
