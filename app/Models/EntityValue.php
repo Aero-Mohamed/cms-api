@@ -13,6 +13,7 @@ class EntityValue extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'entity_id',
         'record_id',
         'attribute_id',
         'value',
