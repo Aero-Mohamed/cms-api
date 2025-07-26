@@ -25,14 +25,17 @@ class LoginUserAction
      */
     public function handle(LoginUserData $data): User
     {
-        if (!Auth::attempt($data->toArray())) {
+        $credentials = $data->only('email', 'password')->toArray();
+
+        $userProvider = Auth::getProvider();
+        /** @var User|null $user */
+        $user = $userProvider->retrieveByCredentials($credentials);
+
+        if (!$user || !$userProvider->validateCredentials($user, $credentials)) {
             throw new AuthenticationException('Invalid credentials.');
         }
 
-        /** @var User $user */
-        $user = Auth::user();
         $this->userRepository->deleteTokens($user);
-
         return $user;
     }
 }

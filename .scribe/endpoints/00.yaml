@@ -1,122 +1,6 @@
 name: Authentication
-description: |-
-
-  APIs for managing Users Authentication
+description: ''
 endpoints:
-  -
-    httpMethods:
-      - POST
-    uri: api/auth/register
-    metadata:
-      groupName: Authentication
-      groupDescription: |-
-
-        APIs for managing Users Authentication
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Register a new user'
-      description: 'This endpoint allows new users to register by providing their name, email, and password. Returns the created user resource along with an access token.'
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      name:
-        name: name
-        description: 'The name of the user.'
-        required: true
-        example: 'John Doe'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      email:
-        name: email
-        description: 'The email of the user. Must be unique.'
-        required: true
-        example: john@example.com
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      password:
-        name: password
-        description: 'The password for the user. Must be at least 8 characters and confirmed.'
-        required: true
-        example: secret123
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      password_confirmation:
-        name: password_confirmation
-        description: 'Must match the password.'
-        required: true
-        example: secret123
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-    cleanBodyParameters:
-      name: 'John Doe'
-      email: john@example.com
-      password: secret123
-      password_confirmation: secret123
-    fileParameters: []
-    responses:
-      -
-        status: 200
-        content: |-
-          {
-            "success": true,
-            "status_code": 200,
-            "message": null,
-            "data": {
-              "id": 1,
-              "name": "John Doe",
-              "email": "john@example.com",
-              "created_at": "2025-07-25T15:00:00.000000Z",
-              "updated_at": "2025-07-25T15:00:00.000000Z",
-              "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIs...",
-              "expires_in": 3600
-            },
-            "errors": null
-          }
-        headers: []
-        description: ''
-        custom: []
-      -
-        status: 422
-        content: |-
-          {
-            "success": false,
-            "status_code": 422,
-            "message": "The given data was invalid.",
-            "data": null,
-            "errors": {
-              "email": [
-                "The email has already been taken."
-              ]
-            }
-          }
-        headers: []
-        description: ''
-        custom: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
   -
     httpMethods:
       - POST
@@ -142,7 +26,7 @@ endpoints:
         name: email
         description: "The user's email address."
         required: true
-        example: john@example.com
+        example: admin@example.com
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -152,15 +36,15 @@ endpoints:
         name: password
         description: "The user's password."
         required: true
-        example: secret123
+        example: password
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         custom: []
     cleanBodyParameters:
-      email: john@example.com
-      password: secret123
+      email: admin@example.com
+      password: password
     fileParameters: []
     responses:
       -
