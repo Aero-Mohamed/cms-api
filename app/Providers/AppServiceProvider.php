@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Schema\Contracts\EntityFormSchemaServiceInterface;
+use App\Services\Schema\EntityFormSchemaService;
 use App\Services\User\Contracts\UserServiceInterface;
 use App\Services\User\UserService;
 use Illuminate\Database\Eloquent\Model;
@@ -34,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $bindings = [
             UserServiceInterface::class => UserService::class,
-
+            EntityFormSchemaServiceInterface::class => EntityFormSchemaService::class,
         ];
 
         foreach ($bindings as $abstract => $concrete) {
