@@ -3,8 +3,11 @@
 namespace App\Repositories\Schema\Contracts;
 
 use App\Dtos\Schema\CreateEntityData;
+use App\Dtos\Schema\CreateEntityRelationshipData;
 use App\Dtos\Schema\UpdateEntityData;
 use App\Models\Entity;
+use App\Models\EntityRelationship;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface EntityRepositoryInterface
@@ -56,4 +59,28 @@ interface EntityRepositoryInterface
      * @return bool
      */
     public function delete(Entity $entity): bool;
+
+    /**
+     * Create a new entity relationship
+     *
+     * @param CreateEntityRelationshipData $data
+     * @return EntityRelationship
+     */
+    public function createRelationship(CreateEntityRelationshipData $data): EntityRelationship;
+
+    /**
+     * Delete an entity relationship
+     *
+     * @param EntityRelationship $relationship
+     * @return bool
+     */
+    public function deleteRelationship(EntityRelationship $relationship): bool;
+
+    /**
+     * Get relationships for a specific entity
+     *
+     * @param Entity $entity
+     * @return Collection
+     */
+    public function getEntityRelationships(Entity $entity): Collection;
 }

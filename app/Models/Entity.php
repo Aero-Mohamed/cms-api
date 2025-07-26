@@ -39,4 +39,20 @@ class Entity extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    /**
+     * Get the outgoing relationships where this entity is the source.
+     */
+    public function outgoingRelationships()
+    {
+        return $this->hasMany(EntityRelationship::class, 'from_entity_id');
+    }
+
+    /**
+     * Get the incoming relationships where this entity is the target.
+     */
+    public function incomingRelationships()
+    {
+        return $this->hasMany(EntityRelationship::class, 'to_entity_id');
+    }
 }

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Schema;
 
 use App\Dtos\Schema\CreateEntityData;
+use App\Dtos\Schema\CreateEntityRelationshipData;
 use App\Dtos\Schema\UpdateEntityData;
 use App\Enums\SystemRoleEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EntityRelationshipResource;
 use App\Http\Resources\EntityResource;
 use App\Models\Entity;
+use App\Models\EntityRelationship;
 use App\Repositories\Schema\Contracts\EntityRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -194,6 +197,108 @@ class EntityController extends Controller
 
         return $this->success(
             message: 'Entity deleted successfully'
+        );
+    }
+
+    /**
+     * Create Entity Relationship
+     *
+     * This endpoint allows to create a new relationship between entities.
+     * @authenticated
+     *
+     * @param CreateEntityRelationshipData $data
+     * @return JsonResponse
+     *
+     * @bodyParam type string required The type of relationship (1:1, 1:N, N:N). Example: 1:N
+     * @bodyParam from_entity_id integer required The ID of the source entity. Example: 1
+     * @bodyParam to_entity_id integer required The ID of the target entity. Example: 2
+     * @bodyParam name string optional The name of the relationship (auto-generated if not provided). Example: has_many
+     * @bodyParam inverse_name string optional The inverse name of the relationship (auto-generated if not provided). Example: belongs_to
+     *
+     * @response 201 {
+     *   "success": true,
+     *   "status_code": 201,
+     *   "message": "Relationship created successfully",
+     *   "data": {
+     *     "id": 1,
+     *     "type": "1:N",
+     *     "name": "has_many",
+     *     "inverse_name": "belongs_to",
+     *     "from_entity_id": 1,
+     *     "to_entity_id": 2
+     *   },
+     *   "errors": null
+     * }
+     */
+    public function createRelationship(CreateEntityRelationshipData $data): JsonResponse
+    {
+        $relationship = $this->entityRepository->createRelationship($data);
+
+        return $this->success(
+            data: $relationship,
+            message: 'Relationship created successfully',
+            statusCode: ResponseAlias::HTTP_CREATED
+        );
+    }
+
+    /**
+     * Delete Entity Relationship
+     *
+     * This endpoint allows deleting a specific relationship by id.
+     * @authenticated
+     *
+     * @param EntityRelationship $relationship
+     * @return JsonResponse
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "status_code": 200,
+     *   "message": "Relationship deleted successfully",
+     *   "data": null,
+     *   "errors": null
+     * }
+     */
+    public function deleteRelationship(EntityRelationship $relationship): JsonResponse
+    {
+        $this->entityRepository->deleteRelationship($relationship);
+
+        return $this->success(
+            message: 'Relationship deleted successfully'
+        );
+    }
+
+    /**
+     * Get Entity Relationships
+     *
+     * This endpoint allows retrieving all relationships for a specific entity.
+     * @authenticated
+     *
+     * @param Entity $entity
+     * @return JsonResponse
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "status_code": 200,
+     *   "message": null,
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "type": "1:N",
+     *       "name": "has_many",
+     *       "inverse_name": "belongs_to",
+     *       "from_entity_id": 1,
+     *       "to_entity_id": 2
+     *     }
+     *   ],
+     *   "errors": null
+     * }
+     */
+    public function getRelationships(Entity $entity): JsonResponse
+    {
+        $relationships = $this->entityRepository->getEntityRelationships($entity);
+
+        return $this->success(
+            data: EntityRelationshipResource::collection($relationships)
         );
     }
 }

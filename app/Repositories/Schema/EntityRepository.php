@@ -3,8 +3,10 @@
 namespace App\Repositories\Schema;
 
 use App\Dtos\Schema\CreateEntityData;
+use App\Dtos\Schema\CreateEntityRelationshipData;
 use App\Dtos\Schema\UpdateEntityData;
 use App\Models\Entity;
+use App\Models\EntityRelationship;
 use App\Repositories\Schema\Contracts\EntityRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -79,5 +81,43 @@ class EntityRepository implements EntityRepositoryInterface
     public function delete(Entity $entity): bool
     {
         return $entity->delete();
+    }
+
+    /**
+     * Create a new entity relationship
+     *
+     * @param CreateEntityRelationshipData $data
+     * @return EntityRelationship
+     */
+    public function createRelationship(CreateEntityRelationshipData $data): EntityRelationship
+    {
+        return EntityRelationship::create($data->toArray());
+    }
+
+    /**
+     * Delete an entity relationship
+     *
+     * @param EntityRelationship $relationship
+     * @return bool
+     */
+    public function deleteRelationship(EntityRelationship $relationship): bool
+    {
+        return $relationship->delete();
+    }
+
+    /**
+     * Get relationships for a specific entity
+     *
+     * @param Entity $entity
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getEntityRelationships(Entity $entity): \Illuminate\Database\Eloquent\Collection
+    {
+        // Get both outgoing and incoming relationships
+        $outgoing = $entity->outgoingRelationships;
+        $incoming = $entity->incomingRelationships;
+
+        // Merge the collections
+        return $outgoing->merge($incoming);
     }
 }

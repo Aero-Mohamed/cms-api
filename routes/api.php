@@ -34,4 +34,12 @@ Route::prefix('admin')
             ->name('attributes.attach');
         Route::post('attributes/detach', [AttributeController::class, 'detachFromEntity'])
             ->name('attributes.detach');
+
+        // Entity-Entity relationship routes
+        Route::post('entities/relationships', [EntityController::class, 'createRelationship'])
+            ->name('entities.relationships.create');
+        Route::delete('entities/relationships/{relationship}', [EntityController::class, 'deleteRelationship'])
+            ->name('entities.relationships.delete');
+        Route::get('entities/{entity}/relationships', [EntityController::class, 'getRelationships'])
+            ->name('entities.relationships');
     });

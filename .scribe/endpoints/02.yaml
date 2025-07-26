@@ -366,3 +366,237 @@ endpoints:
     method: null
     route: null
     custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/admin/entities/relationships
+    metadata:
+      groupName: Entities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create Entity Relationship'
+      description: 'This endpoint allows to create a new relationship between entities.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      type:
+        name: type
+        description: 'The type of relationship (1:1, 1:N, N:N).'
+        required: true
+        example: '1:N'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      from_entity_id:
+        name: from_entity_id
+        description: 'The ID of the source entity.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      to_entity_id:
+        name: to_entity_id
+        description: 'The ID of the target entity.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      name:
+        name: name
+        description: 'optional The name of the relationship (auto-generated if not provided).'
+        required: false
+        example: has_many
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      inverse_name:
+        name: inverse_name
+        description: 'optional The inverse name of the relationship (auto-generated if not provided).'
+        required: false
+        example: belongs_to
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      type: '1:N'
+      from_entity_id: 1
+      to_entity_id: 2
+      name: has_many
+      inverse_name: belongs_to
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+            "success": true,
+            "status_code": 201,
+            "message": "Relationship created successfully",
+            "data": {
+              "id": 1,
+              "type": "1:N",
+              "name": "has_many",
+              "inverse_name": "belongs_to",
+              "from_entity_id": 1,
+              "to_entity_id": 2
+            },
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/admin/entities/relationships/{relationship_id}'
+    metadata:
+      groupName: Entities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete Entity Relationship'
+      description: 'This endpoint allows deleting a specific relationship by id.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      relationship_id:
+        name: relationship_id
+        description: 'The ID of the relationship.'
+        required: true
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      relationship_id: 17
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "status_code": 200,
+            "message": "Relationship deleted successfully",
+            "data": null,
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/admin/entities/{entity_id}/relationships'
+    metadata:
+      groupName: Entities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Entity Relationships'
+      description: 'This endpoint allows retrieving all relationships for a specific entity.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      entity_id:
+        name: entity_id
+        description: 'The ID of the entity.'
+        required: true
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      entity_id: 17
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "status_code": 200,
+            "message": null,
+            "data": [
+              {
+                "id": 1,
+                "type": "1:N",
+                "name": "has_many",
+                "inverse_name": "belongs_to",
+                "from_entity_id": 1,
+                "to_entity_id": 2
+              }
+            ],
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
