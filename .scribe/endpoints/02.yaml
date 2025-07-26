@@ -1,0 +1,368 @@
+name: Entities
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/admin/entities
+    metadata:
+      groupName: Entities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get all Entities'
+      description: 'Returns a list of all entities.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "status_code": 200,
+            "message": null,
+            "data": [
+              {
+                "id": 1,
+                "name": "Product",
+                "slug": "product",
+                "description": "Product entity",
+                "created_at": "2025-07-25T15:00:00.000000Z",
+                "updated_at": "2025-07-25T15:00:00.000000Z"
+              }
+            ],
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/admin/entities
+    metadata:
+      groupName: Entities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create an Entity'
+      description: 'This endpoint allows to create a new entity.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'The name of the entity.'
+        required: true
+        example: Product
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      slug:
+        name: slug
+        description: 'The slug of the entity.'
+        required: true
+        example: product
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      description:
+        name: description
+        description: 'The description of the entity.'
+        required: false
+        example: 'Product entity'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      name: Product
+      slug: product
+      description: 'Product entity'
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+            "success": true,
+            "status_code": 201,
+            "message": "Entity created successfully",
+            "data": {
+              "id": 1,
+              "name": "Product",
+              "slug": "product",
+              "description": "Product entity",
+              "created_at": "2025-07-25T15:00:00.000000Z",
+              "updated_at": "2025-07-25T15:00:00.000000Z"
+            },
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/admin/entities/{id}'
+    metadata:
+      groupName: Entities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Show entity'
+      description: 'This endpoint allows to get a specific entity by id.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the entity.'
+        required: true
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 17
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "status_code": 200,
+            "message": null,
+            "data": {
+              "id": 1,
+              "name": "Product",
+              "slug": "product",
+              "description": "Product entity",
+              "created_at": "2025-07-25T15:00:00.000000Z",
+              "updated_at": "2025-07-25T15:00:00.000000Z"
+            },
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/admin/entities/{id}'
+    metadata:
+      groupName: Entities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update Entity'
+      description: "This endpoint allows to update an entity's information."
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the entity.'
+        required: true
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 17
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'The name of the entity.'
+        required: false
+        example: 'Updated Product'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      slug:
+        name: slug
+        description: 'The slug of the entity.'
+        required: false
+        example: updated-product
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      description:
+        name: description
+        description: 'The description of the entity.'
+        required: false
+        example: 'Updated product entity'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      name: 'Updated Product'
+      slug: updated-product
+      description: 'Updated product entity'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "status_code": 200,
+            "message": "Entity updated successfully",
+            "data": {
+              "id": 1,
+              "name": "Updated Product",
+              "slug": "updated-product",
+              "description": "Updated product entity",
+              "created_at": "2025-07-25T15:00:00.000000Z",
+              "updated_at": "2025-07-26T13:45:00.000000Z"
+            },
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/admin/entities/{id}'
+    metadata:
+      groupName: Entities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete entity'
+      description: 'This endpoint allows to delete a specific entity by id.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the entity.'
+        required: true
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 17
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "status_code": 200,
+            "message": "Entity deleted successfully",
+            "data": null,
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
