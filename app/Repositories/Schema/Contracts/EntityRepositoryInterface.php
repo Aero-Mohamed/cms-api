@@ -80,7 +80,7 @@ interface EntityRepositoryInterface
      * Get relationships for a specific entity
      *
      * @param Entity $entity
-     * @return Collection
+     * @return Collection<EntityRelationship>
      */
     public function getEntityRelationships(Entity $entity): Collection;
 }

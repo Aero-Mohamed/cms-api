@@ -21,8 +21,8 @@ class EntityFormSchemaService implements EntityFormSchemaServiceInterface
      * @param EntityRelationshipFieldGenerator $relationshipFieldGenerator
      */
     public function __construct(
-        protected EntityFieldGenerator             $fieldGenerator,
-        protected EntityValidationRuleGenerator    $validationRuleGenerator,
+        protected EntityFieldGenerator $fieldGenerator,
+        protected EntityValidationRuleGenerator $validationRuleGenerator,
         protected EntityRelationshipFieldGenerator $relationshipFieldGenerator,
     ) {
     }
@@ -43,5 +43,4 @@ class EntityFormSchemaService implements EntityFormSchemaServiceInterface
             'relationship_fields' => $this->relationshipFieldGenerator->generate($entity),
         ];
     }
-
 }

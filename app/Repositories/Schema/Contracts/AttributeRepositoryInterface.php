@@ -81,7 +81,7 @@ interface AttributeRepositoryInterface
      * Get all attributes for an entity
      *
      * @param Entity $entity
-     * @return Collection
+     * @return Collection<Entity>
      */
     public function getAttributesForEntity(Entity $entity): Collection;
 }

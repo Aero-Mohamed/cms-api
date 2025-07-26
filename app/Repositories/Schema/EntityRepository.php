@@ -8,6 +8,7 @@ use App\Dtos\Schema\UpdateEntityData;
 use App\Models\Entity;
 use App\Models\EntityRelationship;
 use App\Repositories\Schema\Contracts\EntityRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
@@ -109,13 +110,13 @@ class EntityRepository implements EntityRepositoryInterface
      * Get relationships for a specific entity
      *
      * @param Entity $entity
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
-    public function getEntityRelationships(Entity $entity): \Illuminate\Database\Eloquent\Collection
+    public function getEntityRelationships(Entity $entity): Collection
     {
         // Get both outgoing and incoming relationships
-        $outgoing = $entity->outgoingRelationships;
-        $incoming = $entity->incomingRelationships;
+        $outgoing = $entity->outgoingRelationships()->get();
+        $incoming = $entity->incomingRelationships()->get();
 
         // Merge the collections
         return $outgoing->merge($incoming);

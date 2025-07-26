@@ -16,7 +16,8 @@ class EntityRelationshipFieldGenerator
     public function __construct(
         protected AttributeRepositoryInterface $attributeRepository,
         protected EntityRepositoryInterface $entityRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * Generate relationship fields for a given entity
@@ -30,20 +31,21 @@ class EntityRelationshipFieldGenerator
         $relationships = $this->entityRepository->getEntityRelationships($entity);
 
         foreach ($relationships as $relationship) {
-            $isSource = $relationship->from_entity_id === $entity->id;
+            $isSource = $relationship->getAttribute('from_entity_id') === $entity->getKey();
+            /** @var Entity $relatedEntity */
             $relatedEntity = $isSource
-                ? $relationship->toEntity
-                : $relationship->fromEntity;
+                ? $relationship->toEntity()->first()
+                : $relationship->fromEntity()->first();
 
             $fieldName = $isSource
-                ? $relationship->name
-                : $relationship->inverse_name;
+                ? $relationship->getAttribute('name')
+                : $relationship->getAttribute('inverse_name');
 
             $field = [
                 'name' => $fieldName,
                 'label' => ucfirst(str_replace('_', ' ', $fieldName)),
-                'related_entity' => $relatedEntity->slug,
-                'relationship_type' => $relationship->type->value,
+                'related_entity' => $relatedEntity->getAttribute('slug'),
+                'relationship_type' => $relationship->getAttribute('type')->value,
                 'is_source' => $isSource,
             ];
 
@@ -73,5 +75,4 @@ class EntityRelationshipFieldGenerator
 
         return $relationshipFields;
     }
-
 }

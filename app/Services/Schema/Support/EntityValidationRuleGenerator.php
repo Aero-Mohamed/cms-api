@@ -18,7 +18,8 @@ class EntityValidationRuleGenerator
     public function __construct(
         protected AttributeRepositoryInterface $attributeRepository,
         protected EntityRepositoryInterface $entityRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * Generate validation rules for a given entity based on its attributes and relationships
@@ -41,14 +42,14 @@ class EntityValidationRuleGenerator
 
             // Add the required rule if the attribute is required
             // For PUT/PATCH requests, fields are optional unless it's a PUT request
-            if ($attribute->is_required && (!$isUpdate || strtoupper($requestType) === 'PUT')) {
+            if ($attribute->getAttribute('is_required') && (!$isUpdate || strtoupper($requestType) === 'PUT')) {
                 $fieldRules[] = 'required';
             } else {
                 $fieldRules[] = 'nullable';
             }
 
             // Add type-specific validation rules
-            switch ($attribute->data_type) {
+            switch ($attribute->getAttribute('data_type')) {
                 case DataTypeEnum::STRING:
                     $fieldRules[] = 'string';
                     break;
@@ -66,10 +67,10 @@ class EntityValidationRuleGenerator
                     break;
             }
 
-            if ($attribute->is_unique) {
+            if ($attribute->getAttribute('is_unique')) {
                 $uniqueRule = Rule::unique('entity_values', 'value')
                     ->where('entity_id', $entity->getKey())
-                    ->where('attribute_id', $attribute->id);
+                    ->where('attribute_id', $attribute->getKey());
 
                 if ($isUpdate && $recordId) {
                     $uniqueRule->whereNot('record_id', $recordId);
@@ -109,7 +110,7 @@ class EntityValidationRuleGenerator
                         // For one-to-many (source), we expect an array of IDs
                         $relationshipRules[] = 'array';
                         $relationshipRules[] = 'min:0';
-                        $rules[$fieldName.'.*'] = "integer|exists:records,id,entity_id,$relatedEntityId";
+                        $rules[$fieldName . '.*'] = "integer|exists:records,id,entity_id,$relatedEntityId";
                     } else {
                         // For one-to-many (target), we expect a single ID
                         $relationshipRules[] = 'integer';
@@ -121,7 +122,7 @@ class EntityValidationRuleGenerator
                     // For many-to-many, we expect an array of IDs
                     $relationshipRules[] = 'array';
                     $relationshipRules[] = 'min:0';
-                    $rules[$fieldName.'.*'] = "integer|exists:records,id,entity_id,$relatedEntityId";
+                    $rules[$fieldName . '.*'] = "integer|exists:records,id,entity_id,$relatedEntityId";
                     break;
             }
 

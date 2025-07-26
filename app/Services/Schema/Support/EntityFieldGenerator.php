@@ -13,7 +13,8 @@ class EntityFieldGenerator
      */
     public function __construct(
         protected AttributeRepositoryInterface $attributeRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Generate fields for a given entity based on its attributes
@@ -28,11 +29,11 @@ class EntityFieldGenerator
 
         foreach ($attributes as $attribute) {
             $field = [
-                'name' => $attribute->slug,
-                'label' => $attribute->name,
-                'type' => $this->mapDataTypeToFieldType($attribute->data_type),
-                'required' => $attribute->is_required,
-                'default_value' => $attribute->default_value,
+                'name' => $attribute->getAttribute('slug'),
+                'label' => $attribute->getAttribute('name'),
+                'type' => $this->mapDataTypeToFieldType($attribute->getAttribute('data_type')),
+                'required' => $attribute->getAttribute('is_required'),
+                'default_value' => $attribute->getAttribute('default_value'),
             ];
 
             $fields[] = $field;
