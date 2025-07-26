@@ -13,6 +13,7 @@ use Spatie\LaravelData\Attributes\Validation\Required;
 use Spatie\LaravelData\Attributes\Validation\Sometimes;
 use Spatie\LaravelData\Attributes\Validation\Unique;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Support\Validation\References\RouteParameterReference;
 
 class UpdateOperatorData extends Data
 {
@@ -25,6 +26,7 @@ class UpdateOperatorData extends Data
         #[Sometimes, Max(255)]
         public ?string $name = null,
         #[Sometimes, Email, Max(255)]
+        #[Unique('users', 'email', ignore: new RouteParameterReference('operator', 'id'))]
         public ?string $email = null,
         #[Sometimes, Min(8), Max(255), Confirmed]
         public ?string $password = null,

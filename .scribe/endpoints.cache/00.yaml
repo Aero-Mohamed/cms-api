@@ -28,7 +28,7 @@ endpoints:
         name: email
         description: "The user's email address."
         required: true
-        example: john@example.com
+        example: admin@example.com
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -38,15 +38,15 @@ endpoints:
         name: password
         description: "The user's password."
         required: true
-        example: secret123
+        example: password
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         custom: []
     cleanBodyParameters:
-      email: john@example.com
-      password: secret123
+      email: admin@example.com
+      password: password
     fileParameters: []
     responses:
       -

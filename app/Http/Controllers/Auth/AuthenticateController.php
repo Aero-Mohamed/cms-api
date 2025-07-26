@@ -34,8 +34,8 @@ class AuthenticateController extends Controller
      * @return JsonResponse
      * @throws AuthenticationException
      *
-     * @bodyParam email string required The user's email address. Example: john@example.com
-     * @bodyParam password string required The user's password. Example: secret123
+     * @bodyParam email string required The user's email address. Example: admin@example.com
+     * @bodyParam password string required The user's password. Example: password
      *
      * @response 200 {
      *   "success": true,

@@ -13,13 +13,9 @@ Route::prefix('auth')->as('api.')->group(function () {
     });
 });
 
-Route::prefix('admin/operators')
+Route::prefix('admin')
     ->as('api.')
     ->middleware('auth:api')
     ->group(function () {
-
-        Route::post('/', [OperatorController::class, 'store']);
-        Route::get('/', [OperatorController::class, 'index']);
-        Route::get('/{operator}', [OperatorController::class, 'show']);
-        Route::delete('/{operator}', [OperatorController::class, 'destroy']);
+        Route::apiResource('operators', OperatorController::class);
     });

@@ -5,6 +5,62 @@ description: ''
 endpoints:
   -
     httpMethods:
+      - GET
+    uri: api/admin/operators
+    metadata:
+      groupName: Operators
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get all Operators'
+      description: 'Returns a list of users with the "operator" role.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "status": true,
+            "message": "Success",
+            "data": [
+              {
+                "id": 1,
+                "name": "John Doe",
+                "email": "john@example.com",
+              },
+              {
+                "id": 2,
+                "name": "Jane Smith",
+                "email": "jane@example.com",
+              }
+            ]
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
       - POST
     uri: api/admin/operators
     metadata:
@@ -120,63 +176,7 @@ endpoints:
   -
     httpMethods:
       - GET
-    uri: api/admin/operators
-    metadata:
-      groupName: Operators
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get all Operators'
-      description: 'Returns a list of users with the "operator" role.'
-      authenticated: true
-      custom: []
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        status: 200
-        content: |-
-          {
-            "status": true,
-            "message": "Success",
-            "data": [
-              {
-                "id": 1,
-                "name": "John Doe",
-                "email": "john@example.com",
-              },
-              {
-                "id": 2,
-                "name": "Jane Smith",
-                "email": "jane@example.com",
-              }
-            ]
-          }
-        headers: []
-        description: ''
-        custom: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - GET
-    uri: 'api/admin/operators/{operator_id}'
+    uri: 'api/admin/operators/{id}'
     metadata:
       groupName: Operators
       groupDescription: ''
@@ -191,8 +191,8 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      operator_id:
-        name: operator_id
+      id:
+        name: id
         description: 'The ID of the operator.'
         required: true
         example: 17
@@ -202,7 +202,7 @@ endpoints:
         nullable: false
         custom: []
     cleanUrlParameters:
-      operator_id: 17
+      id: 17
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -239,8 +239,117 @@ endpoints:
     custom: []
   -
     httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/admin/operators/{id}'
+    metadata:
+      groupName: Operators
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update Operator'
+      description: "This endpoint allows admin to update an operator's information. It handles both PUT and PATCH requests."
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the operator.'
+        required: true
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 17
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'The name of the user.'
+        required: false
+        example: 'John Doe'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      email:
+        name: email
+        description: 'The email of the user. Must be unique.'
+        required: false
+        example: john@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      password:
+        name: password
+        description: 'The password for the user. Must be at least 8 characters and confirmed.'
+        required: false
+        example: secret123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      password_confirmation:
+        name: password_confirmation
+        description: 'Must match the password.'
+        required: false
+        example: secret123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      name: 'John Doe'
+      email: john@example.com
+      password: secret123
+      password_confirmation: secret123
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "status_code": 200,
+            "message": null,
+            "data": {
+              "id": 1,
+              "name": "John Doe",
+              "email": "john@example.com",
+              "created_at": "2025-07-25T15:00:00.000000Z",
+              "updated_at": "2025-07-26T13:45:00.000000Z",
+            },
+            "errors": null
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
       - DELETE
-    uri: 'api/admin/operators/{operator_id}'
+    uri: 'api/admin/operators/{id}'
     metadata:
       groupName: Operators
       groupDescription: ''
@@ -255,8 +364,8 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      operator_id:
-        name: operator_id
+      id:
+        name: id
         description: 'The ID of the operator.'
         required: true
         example: 17
@@ -266,7 +375,7 @@ endpoints:
         nullable: false
         custom: []
     cleanUrlParameters:
-      operator_id: 17
+      id: 17
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []

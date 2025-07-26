@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Operator;
 
 use App\Dtos\User\CreateOperatorData;
+use App\Dtos\User\UpdateOperatorData;
 use App\Enums\SystemRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
@@ -142,11 +143,41 @@ class OperatorController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update Operator
+     *
+     * This endpoint allows admin to update an operator's information. It handles both PUT and PATCH requests.
+     * @authenticated
+     *
+     * @param UpdateOperatorData $data
+     * @param User $operator
+     * @return JsonResponse
+     *
+     * @bodyParam name string The name of the user. Example: John Doe
+     * @bodyParam email string The email of the user. Must be unique. Example: john@example.com
+     * @bodyParam password string The password for the user. Must be at least 8 characters and confirmed. Example: secret123
+     * @bodyParam password_confirmation string Must match the password. Example: secret123
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "status_code": 200,
+     *   "message": null,
+     *   "data": {
+     *     "id": 1,
+     *     "name": "John Doe",
+     *     "email": "john@example.com",
+     *     "created_at": "2025-07-25T15:00:00.000000Z",
+     *     "updated_at": "2025-07-26T13:45:00.000000Z",
+     *   },
+     *   "errors": null
+     * }
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateOperatorData $data, User $operator): JsonResponse
     {
-        //
+        $operator = $this->userRepository->updateOperator($data, $operator);
+
+        return $this->success(
+            data: UserResource::make($operator)
+        );
     }
 
     /**

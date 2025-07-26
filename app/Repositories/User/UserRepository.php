@@ -3,6 +3,7 @@
 namespace App\Repositories\User;
 
 use App\Dtos\User\CreateOperatorData;
+use App\Dtos\User\UpdateOperatorData;
 use App\Enums\SystemRoleEnum;
 use App\Models\User;
 use App\Repositories\User\Contracts\UserRepositoryInterface;
@@ -94,5 +95,28 @@ class UserRepository implements UserRepositoryInterface
     public function deleteUser(User $user): void
     {
         $user->delete();
+    }
+
+    /**
+     * @param UpdateOperatorData $data
+     * @param User $user
+     * @return User
+     */
+    public function updateOperator(UpdateOperatorData $data, User $user): User
+    {
+        if ($data->name !== null) {
+            $user->setAttribute('name', $data->name);
+        }
+
+        if ($data->email !== null) {
+            $user->setAttribute('email', $data->email);
+        }
+
+        if ($data->password !== null) {
+            $user->setAttribute('password', bcrypt($data->password));
+        }
+
+        $user->save();
+        return $user;
     }
 }
