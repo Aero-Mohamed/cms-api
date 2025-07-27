@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('attribute_id')->constrained('attributes')->cascadeOnDelete();
             $table->foreignId('entity_id')->constrained('entities')->cascadeOnDelete();
+
+            $table->unique(['attribute_id', 'entity_id']);
         });
     }
 

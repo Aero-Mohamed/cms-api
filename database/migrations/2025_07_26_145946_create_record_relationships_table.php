@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('from_record_id')->constrained('records')->cascadeOnDelete();
             $table->foreignId('to_record_id')->constrained('records')->cascadeOnDelete();
             $table->timestamps();
+
+            $table->unique(['relationship_id', 'from_record_id', 'to_record_id'], 'unique_relation_record');
         });
     }
 

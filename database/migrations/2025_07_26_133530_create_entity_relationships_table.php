@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('inverse_name', 100);
             $table->foreignId('from_entity_id')->constrained('entities')->cascadeOnDelete();
             $table->foreignId('to_entity_id')->constrained('entities')->cascadeOnDelete();
+
+            $table->unique(['type', 'from_entity_id', 'to_entity_id'], 'unique_relation');
         });
     }
 
