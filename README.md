@@ -1,61 +1,244 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🧩 Dynamic CMS Backend API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel-based backend API for a generic Content Management System (CMS), designed to allow full **dynamic entity creation**, **custom attributes**, and **content management**.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 📝 API Postman Documentation
+For detailed API documentation, refer to the [Postman Collection](https://documenter.getpostman.com/view/4735551/2sB3B7Msz8).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### ⚒️ Use Case
+A complete use case scenario is available in the documentation file located at `/resources/docs/1.0/use-case.md`.
+Alternatively, you can install the project and navigate to `/docs` in your browser. Then, select the Use Case section from the sidebar menu.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 🔖 Project Documentation (`/docs`)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+The project documentation is accessible at `/docs`. It includes:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Overview** of the system’s purpose and architecture
+- **Literature Review** of similar software and existing solutions
+- **Installation** instruction
+- **ERD Diagram** illustrating the database structure and entity relationships
+- **Use Case** A complete use case scenario
 
-## Laravel Sponsors
+The documentation content is written in **Markdown** files located in: `resources/docs` 
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+### 🔌 API Reference (`/api-reference`)
+The full API reference is available at `/api-reference`, powered by the **[Laravel Scribe](https://scribe.knuckles.wtf/)** package.
+It provides:
+- Grouped endpoint listings
+- Example requests and responses
+- Parameter details and validation rules
+- Downloadable **Postman collection** and **OpenAPI (Swagger) specification** for testing and external integration
+- 
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
 
-## Contributing
+### ERD Digram
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Note:** 
+- The ERD Digram focuses on the core feature structure.
+- API Authentication is managed by Package Passport
+- Roles and Permissions are managed by [Spatie Laravel Permissions](https://spatie.be/docs/laravel-permission/v6/introduction)
 
-## Code of Conduct
+![ERD Digram](public/docs-assets/img/erd-digram.png)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
+## 🚀 Setup Instructions
+### 🚢 Quick Start with Docker
+#### Prerequisites
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-## Security Vulnerabilities
+#### Instructions
+- **Clone the repository**
+```bash
+git clone https://github.com/Aero-Mohamed/cms-api.git
+cd cms-api
+chmod 644 ./docker/mysql/my.cnf
+```
+As we are in development mode, we mount the current project directory into the container.
+So, we need to change the permissions of the MySQL configuration file.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- **Build and Start Containers**
+```bash
+docker-compose up -d --build
+docker exec -it dynamic_cms bash
+```
+This builds the Docker containers and starts the Laravel app, MySQL, Redis, and Nginx services.
+Then, Open an interactive terminal session inside the Laravel PHP container (called dynamic_cms).
 
-## License
+- **Run the Installation Script**
+```bash
+chmod 755 install.sh
+./install.sh
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🖥️ Manual Installation <a name="ManualInstallation"></a>
+
+If you prefer not to use Docker, you can install the project directly on your system. Note that you will need to configure the database and cache manually.
+
+### Prerequisites
+- PHP 8.1 or higher
+- Composer
+- MySQL 8.0 or higher
+- Redis (for cache)
+- Git
+
+### Instructions
+
+- **Clone the repository**
+```bash
+git clone https://github.com/Aero-Mohamed/cms-api.git
+cd cms-api
+```
+
+- **Install Dependencies**
+```bash
+composer install --no-interaction --prefer-dist --optimize-autoloader
+```
+
+- **Configure Environment**
+```bash
+cp .env.example .env
+```
+Edit the `.env` file and update the following settings:
+
+- Database Configuration
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=dynamic_cms
+DB_USERNAME=your_mysql_username
+DB_PASSWORD=your_mysql_password
+```
+
+- Redis Configuration:
+```dotenv
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+```
+
+- **Run the Installation Script**
+```bash
+chmod 755 install.sh
+./install.sh
+```
+
+- **Start the Development Server**
+```bash
+php artisan serve
+```
+
+The application should now be running at `http://localhost:8000`.
+
+> **Note:** Make sure both MySQL and Redis servers are running before starting the application. You may need to install and configure these services according to your operating system's requirements.
+
+
+---
+
+## 🧠 Project Overview
+
+This CMS backend supports two roles:
+
+- **Admin**:
+    - Creates dynamic entities (e.g., `Product`, `Article`, `Project`)
+    - Defines custom attributes (text, number, date, boolean, etc.)
+    - Manages relationships between entities
+
+- **Operator**:
+    - Views and fills content based on Admin-defined schemas
+    - Uses auto-generated forms powered by the entity definitions
+
+---
+
+## 📦 Features
+
+- Dynamic **entity & field creation**
+- Support for multiple field types: `text`, `number`, `date`, `boolean`
+- Admin vs Operator roles with role-based access
+- Simple and extendable API structure
+- RESTful resource routing
+- JWT-based authentication (Laravel Passport)
+
+## 🛠️ Technologies
+
+- **Laravel 12+**
+- **MySQL DB**
+- **Eloquent ORM**
+- **Laravel Passport** for API auth
+
+---
+
+# 🧪 Continuous Integration (CI)
+
+This project uses **GitHub Actions** to automatically run tests and code quality checks on every push to:
+
+- `develop`
+- Any `feature/**` branch
+
+### CI Workflow Summary
+
+The CI pipeline runs the following checks:
+
+| Step                           | Description                                                 |
+|--------------------------------|-------------------------------------------------------------|
+| ✅ PHP Lint & Version Check     | Ensures PHP 8.3 is used                                     |
+| ✅ Composer Install & Cache     | Installs dependencies with cache optimization               |
+| ✅ Database Setup               | Runs php artisan migrate and migrate:fresh --seed using MySQL container                  |
+| ✅ Security Audit             | Scans for known security vulnerabilities in `composer.lock` |
+| ✅ PHPStan + Larastan           | Static analysis and type checking                           |
+| ✅ PHPCS                        | PSR-12 code style checks                                    |
+| ✅ Tests Execution              | Runs php artisan test --coverage                                       |
+
+### Workflow Configuration
+
+- File path: `.github/workflows/dynamic-cms-ci.yml`
+- Trigger: On push to `develop` or `feature/**` branches
+
+---
+
+## 🛡️Code Standard & Quality
+- Use command `composer lint` to run the following checks:
+    - Static Code Analysis (PHP Stan + LaraStan) - Testing for potential errors.
+        - `./vendor/bin/phpstan analyse`
+    - Php Code Sniffer (PSR-12).
+        - Detect Problems `./vendor/bin/phpcs --standard=PSR12 app`
+        - Fix Problems `./vendor/bin/phpcbf --standard=PSR12 app`
+
+---
+
+## 🧱 Git Workflow
+
+This project follows the **Git Flow** branching model.
+
+### Branch Structure
+
+- `main` – Stable, production-ready code
+- `develop` – Active development branch
+- `feature/*` – Feature branches
+- `release/*` – Pre-release staging branches
+- `bugfix/*` – Small isolated fixes
+- `hotfix/*` – Emergency fixes for `main`
+- `support/*` – Support branches for old releases
+- Versions – `v1.0.0`, `v1.1.0`, etc.
+
+### Git Flow Commands Used
+
+This repo uses [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) via the CLI tool:
+
+---
+
+## 📃 License
+
+This project is licensed under the MIT License – see the [LICENSE](./LICENSE) file for details.
