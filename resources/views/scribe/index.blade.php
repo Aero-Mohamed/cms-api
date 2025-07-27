@@ -150,7 +150,10 @@
                     <a href="#entity-content-management">Entity Content Management</a>
                 </li>
                                     <ul id="tocify-subheader-entity-content-management" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="entity-content-management-POSTapi-content--entitySlug-">
+                                                    <li class="tocify-item level-2" data-unique="entity-content-management-GETapi-content--entitySlug-">
+                                <a href="#entity-content-management-GETapi-content--entitySlug-">List Entity Records</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="entity-content-management-POSTapi-content--entitySlug-">
                                 <a href="#entity-content-management-POSTapi-content--entitySlug-">Create Entity Record</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="entity-content-management-GETapi-content--entitySlug---recordId-">
@@ -189,7 +192,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: July 26, 2025</li>
+        <li>Last updated: July 27, 2025</li>
     </ul>
 </div>
 
@@ -2824,7 +2827,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
-<p>This endpoint allows to get a specific entity by id.</p>
+<p>This endpoint allows getting a specific entity by id.</p>
 
 <span id="example-requests-GETapi-admin-entities--id-">
 <blockquote>Example request:</blockquote>
@@ -4062,7 +4065,245 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
     <p>APIs for managing entity records</p>
 
-                                <h2 id="entity-content-management-POSTapi-content--entitySlug-">Create Entity Record</h2>
+                                <h2 id="entity-content-management-GETapi-content--entitySlug-">List Entity Records</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns a paginated list of records for the specified entity type.</p>
+
+<span id="example-requests-GETapi-content--entitySlug-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/api/content/article?page=17&amp;per_page=17" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/content/article';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'page' =&gt; '17',
+            'per_page' =&gt; '17',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:8000/api/content/article'
+params = {
+  'page': '17',
+  'per_page': '17',
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers, params=params)
+response.json()</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/content/article"
+);
+
+const params = {
+    "page": "17",
+    "per_page": "17",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-content--entitySlug-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;title&quot;: &quot;Example Title&quot;,
+            &quot;content&quot;: &quot;Example content&quot;,
+            &quot;created_at&quot;: &quot;2023-01-01T00:00:00.000000Z&quot;,
+            &quot;updated_at&quot;: &quot;2023-01-01T00:00:00.000000Z&quot;
+        }
+    ],
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;from&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;per_page&quot;: 15,
+        &quot;to&quot;: 1,
+        &quot;total&quot;: 1
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Entity with slug &#039;invalid-slug&#039; not found&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-content--entitySlug-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-content--entitySlug-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-content--entitySlug-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-content--entitySlug-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-content--entitySlug-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-content--entitySlug-" data-method="GET"
+      data-path="api/content/{entitySlug}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-content--entitySlug-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-content--entitySlug-"
+                    onclick="tryItOut('GETapi-content--entitySlug-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-content--entitySlug-"
+                    onclick="cancelTryOut('GETapi-content--entitySlug-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-content--entitySlug-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/content/{entitySlug}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-content--entitySlug-"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-content--entitySlug-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-content--entitySlug-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>entitySlug</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="entitySlug"                data-endpoint="GETapi-content--entitySlug-"
+               value="article"
+               data-component="url">
+    <br>
+<p>The slug of the entity to list records from. Example: <code>article</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="page"                data-endpoint="GETapi-content--entitySlug-"
+               value="17"
+               data-component="query">
+    <br>
+<p>Page number for pagination. Default: 1 Example: <code>17</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="per_page"                data-endpoint="GETapi-content--entitySlug-"
+               value="17"
+               data-component="query">
+    <br>
+<p>Number of records per page. Default: 15 Example: <code>17</code></p>
+            </div>
+                </form>
+
+                    <h2 id="entity-content-management-POSTapi-content--entitySlug-">Create Entity Record</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>

@@ -3,7 +3,6 @@
 namespace App\Repositories\Content;
 
 use App\Enums\RelationshipTypeEnum;
-use App\Models\Attribute;
 use App\Models\Entity;
 use App\Models\EntityRelationship;
 use App\Models\EntityValue;
@@ -13,6 +12,8 @@ use App\Repositories\Content\Contracts\EntityRecordRepositoryInterface;
 use App\Repositories\Schema\Contracts\AttributeRepositoryInterface;
 use App\Repositories\Schema\Contracts\EntityRepositoryInterface;
 use App\Services\Schema\Support\EntityRelationshipFieldGenerator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -28,6 +29,40 @@ class EntityRecordRepository implements EntityRecordRepositoryInterface
         protected EntityRepositoryInterface $entityRepository,
         protected EntityRelationshipFieldGenerator $relationshipFieldGenerator,
     ) {
+    }
+
+    /**
+     * Get a paginated list of records for the given entity with their attributes
+     *
+     * @param Entity $entity The entity to get records from
+     * @param int $perPage Number of records per page
+     * @param int $page Current page number
+     * @return LengthAwarePaginator Paginated records
+     */
+    public function index(Entity $entity, int $perPage = 15, int $page = 1): LengthAwarePaginator
+    {
+        // Start building the query for records
+        $recordsQuery = Record::query()
+            ->where('entity_id', $entity->getKey())
+            ->orderBy('created_at', 'desc');
+
+        return $recordsQuery->paginate($perPage, ['*'], 'page', $page);
+    }
+
+
+    /**
+     * @param Entity $entity
+     * @param LengthAwarePaginator $records
+     * @return Collection
+     */
+    public function recordsValues(Entity $entity, LengthAwarePaginator $records): Collection
+    {
+        $recordIds = $records->pluck('id')->toArray();
+        return EntityValue::query()
+            ->where('entity_id', $entity->getKey())
+            ->whereIn('record_id', $recordIds)
+            ->get()
+            ->groupBy('record_id');
     }
 
     /**

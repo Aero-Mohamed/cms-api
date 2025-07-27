@@ -154,7 +154,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Show entity'
-      description: 'This endpoint allows to get a specific entity by id.'
+      description: 'This endpoint allows getting a specific entity by id.'
       authenticated: true
       custom: []
     headers:

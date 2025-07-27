@@ -31,6 +31,7 @@ class EntityFieldGenerator
 
             foreach ($attributes as $attribute) {
                 $field = [
+                    'id' => $attribute->getKey(),
                     'name' => $attribute->getAttribute('slug'),
                     'label' => $attribute->getAttribute('name'),
                     'type' => $this->mapDataTypeToFieldType($attribute->getAttribute('data_type')),

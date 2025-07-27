@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Content;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\GenericModelResource;
 use App\Models\Entity;
 use App\Repositories\Content\Contracts\EntityRecordRepositoryInterface;
+use App\Repositories\Schema\Contracts\AttributeRepositoryInterface;
 use App\Repositories\Schema\Contracts\EntityRepositoryInterface;
 use App\Services\Schema\Contracts\EntityFormSchemaServiceInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -22,15 +24,80 @@ class GenericEntityController extends Controller
 {
     /**
      * @param EntityRepositoryInterface $entityRepository
+     * @param AttributeRepositoryInterface $attributeRepository
      * @param EntityRecordRepositoryInterface $recordRepository
      * @param EntityFormSchemaServiceInterface $formSchemaService
      */
     public function __construct(
         protected EntityRepositoryInterface $entityRepository,
+        protected AttributeRepositoryInterface $attributeRepository,
         protected EntityRecordRepositoryInterface $recordRepository,
         protected EntityFormSchemaServiceInterface $formSchemaService,
     ) {
         $this->middleware('auth:api');
+    }
+
+    /**
+     * List Entity Records
+     *
+     * Returns a paginated list of records for the specified entity type.
+     *
+     * @authenticated
+     *
+     * @urlParam entitySlug string required The slug of the entity to list records from. Example: article
+     * @queryParam page integer Page number for pagination. Default: 1
+     * @queryParam per_page integer Number of records per page. Default: 15
+     *
+     * @param Request $request
+     * @param string $entitySlug The slug of the entity to list records from
+     * @return JsonResponse
+     * @throws ValidationException
+     *
+     * @response 200 {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "title": "Example Title",
+     *       "content": "Example content",
+     *       "created_at": "2023-01-01T00:00:00.000000Z",
+     *       "updated_at": "2023-01-01T00:00:00.000000Z"
+     *     }
+     *   ],
+     *   "meta": {
+     *     "current_page": 1,
+     *     "from": 1,
+     *     "last_page": 1,
+     *     "per_page": 15,
+     *     "to": 1,
+     *     "total": 1
+     *   }
+     * }
+     *
+     * @response 404 {
+     *   "message": "Entity with slug 'invalid-slug' not found"
+     * }
+     */
+    public function index(Request $request, string $entitySlug): JsonResponse
+    {
+        $entity = $this->entityRepository->findBySlug($entitySlug);
+
+        if (!$entity) {
+            throw ValidationException::withMessages([
+                'entity' => "Entity with slug '{$entitySlug}' not found"
+            ]);
+        }
+
+        $perPage = (int) $request->input('per_page', 15);
+        $page = (int) $request->input('page', 1);
+
+        $records = $this->recordRepository->index($entity, $perPage, $page);
+
+        return $this->success(
+            data: GenericModelResource::collectionWithData($records, [
+                'entityValues' => $this->recordRepository->recordsValues($entity, $records),
+                'entityAttributes' => $this->attributeRepository->getAttributesForEntity($entity),
+            ])
+        );
     }
 
     /**

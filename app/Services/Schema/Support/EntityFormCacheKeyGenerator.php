@@ -44,6 +44,15 @@ class EntityFormCacheKeyGenerator
 
     /**
      * @param Entity $entity
+     * @return string
+     */
+    public static function attributes(Entity $entity): string
+    {
+        return self::baseKey($entity) . '_attributes';
+    }
+
+    /**
+     * @param Entity $entity
      * @return array
      */
     public static function allKeys(Entity $entity): array
@@ -52,6 +61,7 @@ class EntityFormCacheKeyGenerator
             self::fields($entity),
             self::validationRules($entity),
             self::relationships($entity),
+            self::attributes($entity),
         ];
     }
 }
