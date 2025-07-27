@@ -4,6 +4,11 @@ A Laravel-based backend API for a generic Content Management System (CMS), desig
 
 ---
 
+### 📝 API Postman Documentation
+For detailed API documentation, refer to the [Postman Collection](https://documenter.getpostman.com/view/4735551/2sB3B7Msz8).
+
+---
+
 ### 🔖 Project Documentation (`/docs`)
 
 The project documentation is accessible at `/docs`. It includes:
@@ -23,9 +28,11 @@ It provides:
 - Example requests and responses
 - Parameter details and validation rules
 - Downloadable **Postman collection** and **OpenAPI (Swagger) specification** for testing and external integration
+- 
 ---
 
-## ERD Digram
+
+### ERD Digram
 
 **Note:** 
 - The ERD Digram focuses on the core feature structure.
