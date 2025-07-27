@@ -42,7 +42,7 @@ class EntityRecordRepository implements EntityRecordRepositoryInterface
         return DB::transaction(function () use ($entity, $data) {
             // Create the record
             $record = Record::query()->create([
-                'entity_id' => $entity->id,
+                'entity_id' => $entity->getKey(),
                 'created_by' => Auth::id(),
             ]);
 

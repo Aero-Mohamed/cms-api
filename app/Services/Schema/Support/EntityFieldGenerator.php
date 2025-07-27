@@ -5,6 +5,7 @@ namespace App\Services\Schema\Support;
 use App\Enums\DataTypeEnum;
 use App\Models\Entity;
 use App\Repositories\Schema\Contracts\AttributeRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 
 class EntityFieldGenerator
 {
@@ -24,22 +25,24 @@ class EntityFieldGenerator
      */
     public function generate(Entity $entity): array
     {
-        $fields = [];
-        $attributes = $this->attributeRepository->getAttributesForEntity($entity);
+        return Cache::rememberForever(EntityFormCacheKeyGenerator::fields($entity), function () use ($entity) {
+            $fields = [];
+            $attributes = $this->attributeRepository->getAttributesForEntity($entity);
 
-        foreach ($attributes as $attribute) {
-            $field = [
-                'name' => $attribute->getAttribute('slug'),
-                'label' => $attribute->getAttribute('name'),
-                'type' => $this->mapDataTypeToFieldType($attribute->getAttribute('data_type')),
-                'required' => $attribute->getAttribute('is_required'),
-                'default_value' => $attribute->getAttribute('default_value'),
-            ];
+            foreach ($attributes as $attribute) {
+                $field = [
+                    'name' => $attribute->getAttribute('slug'),
+                    'label' => $attribute->getAttribute('name'),
+                    'type' => $this->mapDataTypeToFieldType($attribute->getAttribute('data_type')),
+                    'required' => $attribute->getAttribute('is_required'),
+                    'default_value' => $attribute->getAttribute('default_value'),
+                ];
 
-            $fields[] = $field;
-        }
+                $fields[] = $field;
+            }
 
-        return $fields;
+            return $fields;
+        });
     }
 
     /**
