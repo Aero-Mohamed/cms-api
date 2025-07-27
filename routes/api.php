@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Content\GenericEntityController;
 use App\Http\Controllers\Auth\AuthenticateController;
 use App\Http\Controllers\Operator\OperatorController;
 use App\Http\Controllers\Schema\AttributeController;
@@ -42,4 +43,23 @@ Route::prefix('admin')
             ->name('entities.relationships.delete');
         Route::get('entities/{entity}/relationships', [EntityController::class, 'getRelationships'])
             ->name('entities.relationships');
+    });
+
+// Content API routes
+Route::prefix('content')
+    ->as('api.content.')
+    ->middleware('auth:api')
+    ->group(function () {
+        // List entity records
+        Route::get('{entitySlug}', [GenericEntityController::class, 'index'])
+            ->name('index');
+
+        // Entity record creation
+        Route::post('{entitySlug}', [GenericEntityController::class, 'store'])
+            ->name('store');
+
+        // Get entity record with relations
+        Route::get('{entitySlug}/{recordId}', [GenericEntityController::class, 'show'])
+            ->name('show')
+            ->where('recordId', '[0-9]+');
     });

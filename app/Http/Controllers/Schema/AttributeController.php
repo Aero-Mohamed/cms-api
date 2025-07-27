@@ -11,6 +11,7 @@ use App\Http\Resources\AttributeResource;
 use App\Models\Attribute;
 use App\Models\Entity;
 use App\Repositories\Schema\Contracts\AttributeRepositoryInterface;
+use App\Services\Schema\Actions\InvalidateEntityCacheAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -22,9 +23,11 @@ class AttributeController extends Controller
 {
     /**
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param InvalidateEntityCacheAction $invalidateEntityCacheAction
      */
     public function __construct(
-        protected AttributeRepositoryInterface $attributeRepository
+        protected AttributeRepositoryInterface $attributeRepository,
+        protected InvalidateEntityCacheAction $invalidateEntityCacheAction,
     ) {
         $this->middleware('role:' . SystemRoleEnum::ADMIN->value);
     }
@@ -184,6 +187,10 @@ class AttributeController extends Controller
     {
         $attribute = $this->attributeRepository->update($attribute, $data);
 
+        $this->invalidateEntityCacheAction->handler(
+            $attribute->entities()->get()
+        );
+
         return $this->success(
             data: new AttributeResource($attribute),
             message: 'Attribute updated successfully'
@@ -210,6 +217,10 @@ class AttributeController extends Controller
     public function destroy(Attribute $attribute): JsonResponse
     {
         $this->attributeRepository->delete($attribute);
+
+        $this->invalidateEntityCacheAction->handler(
+            $attribute->entities()->get()
+        );
 
         return $this->success(
             message: 'Attribute deleted successfully'
@@ -284,8 +295,8 @@ class AttributeController extends Controller
      */
     public function attachToEntity(AttributeEntityData $data): JsonResponse
     {
-        $attribute = Attribute::findOrFail($data->attribute_id);
-        $entity = Entity::findOrFail($data->entity_id);
+        $attribute = Attribute::query()->findOrFail($data->attribute_id);
+        $entity = Entity::query()->findOrFail($data->entity_id);
 
         $result = $this->attributeRepository->attachToEntity($attribute, $entity);
 
@@ -295,9 +306,11 @@ class AttributeController extends Controller
             );
         }
 
+        $this->invalidateEntityCacheAction->handler($entity);
+
         return $this->error(
             message: 'Attribute is already attached to this entity',
-            statusCode: Response::HTTP_BAD_REQUEST
+            statusCode: ResponseAlias::HTTP_BAD_REQUEST
         );
     }
 
@@ -331,8 +344,8 @@ class AttributeController extends Controller
      */
     public function detachFromEntity(AttributeEntityData $data): JsonResponse
     {
-        $attribute = Attribute::findOrFail($data->attribute_id);
-        $entity = Entity::findOrFail($data->entity_id);
+        $attribute = Attribute::query()->findOrFail($data->attribute_id);
+        $entity = Entity::query()->findOrFail($data->entity_id);
 
         $result = $this->attributeRepository->detachFromEntity($attribute, $entity);
 
@@ -342,9 +355,11 @@ class AttributeController extends Controller
             );
         }
 
+        $this->invalidateEntityCacheAction->handler($entity);
+
         return $this->error(
             message: 'Attribute is not attached to this entity',
-            statusCode: Response::HTTP_BAD_REQUEST
+            statusCode: ResponseAlias::HTTP_BAD_REQUEST
         );
     }
 }

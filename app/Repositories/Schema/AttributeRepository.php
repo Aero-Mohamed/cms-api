@@ -7,9 +7,11 @@ use App\Dtos\Schema\UpdateAttributeData;
 use App\Models\Attribute;
 use App\Models\Entity;
 use App\Repositories\Schema\Contracts\AttributeRepositoryInterface;
+use App\Services\Schema\Support\EntityFormCacheKeyGenerator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class AttributeRepository implements AttributeRepositoryInterface
 {
@@ -119,6 +121,9 @@ class AttributeRepository implements AttributeRepositoryInterface
      */
     public function getAttributesForEntity(Entity $entity): Collection
     {
-        return $entity->attributes()->get();
+        $key = EntityFormCacheKeyGenerator::attributes($entity);
+        return Cache::rememberForever($key, function () use ($entity) {
+            return $entity->attributes()->get();
+        });
     }
 }

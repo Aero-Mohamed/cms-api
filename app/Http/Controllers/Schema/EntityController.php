@@ -12,9 +12,14 @@ use App\Http\Resources\EntityResource;
 use App\Models\Entity;
 use App\Models\EntityRelationship;
 use App\Repositories\Schema\Contracts\EntityRepositoryInterface;
+use App\Services\Schema\Actions\InvalidateEntityCacheAction;
+use App\Services\Schema\Actions\InvalidateEntityRelationshipCacheAction;
+use App\Services\Schema\EntityFormSchemaService;
+use App\Services\Schema\Support\EntityFormCacheKeyGenerator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 /**
@@ -24,9 +29,14 @@ class EntityController extends Controller
 {
     /**
      * @param EntityRepositoryInterface $entityRepository
+     * @param InvalidateEntityCacheAction $invalidateEntityCacheAction
+     * @param InvalidateEntityRelationshipCacheAction $invalidateRelationCacheAction
      */
     public function __construct(
-        protected EntityRepositoryInterface $entityRepository
+        protected EntityRepositoryInterface $entityRepository,
+        protected InvalidateEntityCacheAction $invalidateEntityCacheAction,
+        protected InvalidateEntityRelationshipCacheAction $invalidateRelationCacheAction,
+        protected EntityFormSchemaService $formSchemaService,
     ) {
         $this->middleware('role:' . SystemRoleEnum::ADMIN->value);
     }
@@ -96,9 +106,10 @@ class EntityController extends Controller
     public function store(CreateEntityData $data): JsonResponse
     {
         $entity = $this->entityRepository->create($data);
+        $schema = $this->formSchemaService->generateFormSchema($entity);
 
         return $this->success(
-            data: new EntityResource($entity),
+            data: (new EntityResource($entity))->additional($schema),
             message: 'Entity created successfully',
             statusCode: ResponseAlias::HTTP_CREATED
         );
@@ -107,7 +118,7 @@ class EntityController extends Controller
     /**
      * Show entity
      *
-     * This endpoint allows to get a specific entity by id.
+     * This endpoint allows getting a specific entity by id.
      * @authenticated
      *
      * @param Entity $entity
@@ -130,8 +141,9 @@ class EntityController extends Controller
      */
     public function show(Entity $entity): JsonResponse
     {
+        $schema = $this->formSchemaService->generateFormSchema($entity);
         return $this->success(
-            data: new EntityResource($entity)
+            data: (new EntityResource($entity))->additional($schema)
         );
     }
 
@@ -193,7 +205,9 @@ class EntityController extends Controller
      */
     public function destroy(Entity $entity): JsonResponse
     {
+        $this->invalidateEntityCacheAction->handler($entity);
         $this->entityRepository->delete($entity);
+
 
         return $this->success(
             message: 'Entity deleted successfully'
@@ -233,6 +247,7 @@ class EntityController extends Controller
     public function createRelationship(CreateEntityRelationshipData $data): JsonResponse
     {
         $relationship = $this->entityRepository->createRelationship($data);
+        $this->invalidateRelationCacheAction->handler($relationship);
 
         return $this->success(
             data: $relationship,
@@ -260,6 +275,7 @@ class EntityController extends Controller
      */
     public function deleteRelationship(EntityRelationship $relationship): JsonResponse
     {
+        $this->invalidateRelationCacheAction->handler($relationship);
         $this->entityRepository->deleteRelationship($relationship);
 
         return $this->success(

@@ -24,16 +24,12 @@ class CreateEntityRelationshipData extends Data
     public function __construct(
         #[Required, Enum(RelationshipTypeEnum::class)]
         public RelationshipTypeEnum $type,
-
         #[Required, Exists('entities', 'id')]
         public int $from_entity_id,
-
         #[Required, Exists('entities', 'id')]
         public int $to_entity_id,
-
         #[Max(100)]
         public ?string $name = null,
-
         #[Max(100)]
         public ?string $inverse_name = null,
     ) {
@@ -88,5 +84,4 @@ class CreateEntityRelationshipData extends Data
                 break;
         }
     }
-
 }

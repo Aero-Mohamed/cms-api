@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Entity extends Model
 {
@@ -43,7 +44,7 @@ class Entity extends Model
     /**
      * Get the outgoing relationships where this entity is the source.
      */
-    public function outgoingRelationships()
+    public function outgoingRelationships(): HasMany
     {
         return $this->hasMany(EntityRelationship::class, 'from_entity_id');
     }
@@ -51,7 +52,7 @@ class Entity extends Model
     /**
      * Get the incoming relationships where this entity is the target.
      */
-    public function incomingRelationships()
+    public function incomingRelationships(): HasMany
     {
         return $this->hasMany(EntityRelationship::class, 'to_entity_id');
     }

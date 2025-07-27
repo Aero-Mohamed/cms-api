@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Content\Contracts\EntityRecordRepositoryInterface;
+use App\Repositories\Content\EntityRecordRepository;
 use App\Repositories\Schema\AttributeRepository;
 use App\Repositories\Schema\Contracts\AttributeRepositoryInterface;
 use App\Repositories\Schema\Contracts\EntityRepositoryInterface;
@@ -21,6 +23,7 @@ class RepositoryBindingServiceProvider extends ServiceProvider
             UserRepositoryInterface::class => UserRepository::class,
             EntityRepositoryInterface::class => EntityRepository::class,
             AttributeRepositoryInterface::class => AttributeRepository::class,
+            EntityRecordRepositoryInterface::class => EntityRecordRepository::class,
         ];
 
         foreach ($bindings as $abstract => $concrete) {
